@@ -394,7 +394,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
     );
   }
 
-/** ========== Mint All: Exact In ========== */
+/** ========== Mint All: Exact Out ========== */
 
   /**
    * @dev Swaps an input token for every underlying token in an index pool,
@@ -542,6 +542,8 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
     }
     poolToken.safeApprove(indexPool, amountToPool);
   }
+
+/** ========== Burn All: Exact In ========== */
 
   /**
    * @dev Burns `poolAmountOut` for all the underlying tokens in a pool, then
