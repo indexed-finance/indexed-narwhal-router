@@ -9,7 +9,7 @@ import "./interfaces/IERC20.sol";
 import "./libraries/TransferHelper.sol";
 
 
-contract IndexedNarwhalMinter is Narwhal, BMath {
+contract IndexedNarwhalRouter is Narwhal, BMath {
   using TokenInfo for bytes32;
   using TokenInfo for address;
   using TransferHelper for address;
