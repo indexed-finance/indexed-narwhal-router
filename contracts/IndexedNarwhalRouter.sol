@@ -106,7 +106,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
    *
    * @param indexPool Address of the index pool to burn tokens from.
    * @param poolAmountIn Amount of pool tokens to burn.
-   * @param path Array of tokens to swap using the Uniswap router.
+   * @param path Array of encoded tokens to swap using the Narwhal router.
    * @param minAmountOut Amount of last token in `path` that must be received to not revert.
    * @return amountOut Amount of output tokens received.
    */
@@ -131,7 +131,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
    *
    * @param indexPool Address of the index pool to burn tokens from.
    * @param poolAmountIn Amount of pool tokens to burn.
-   * @param path Array of tokens to swap using the Uniswap router.
+   * @param path Array of encoded tokens to swap using the Narwhal router.
    * @param minAmountOut Amount of ether that must be received to not revert.
    * @return amountOut Amount of ether received.
    */
@@ -193,7 +193,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
    * @dev Swaps ether for each token in `path` through Uniswap,
    * then mints `poolAmountOut` pool tokens from `indexPool`.
    *
-   * @param path Array of tokens to swap using the Uniswap router.
+   * @param path Array of encoded tokens to swap using the Narwhal router.
    * @param indexPool Address of the index pool to mint tokens from.
    * @param poolAmountOut Amount of pool tokens that must be received to not revert.
    */
@@ -231,7 +231,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
    * then mints at least `poolAmountOut` pool tokens from `indexPool`.
    *
    * @param amountInMax Maximum amount of the first token in `path` to give.
-   * @param path Array of tokens to swap using the Uniswap router.
+   * @param path Array of encoded tokens to swap using the Narwhal router.
    * @param indexPool Address of the index pool to mint tokens from.
    * @param poolAmountOut Amount of pool tokens that must be received to not revert.
    */
@@ -410,11 +410,11 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
    * whether the first swap should use sushiswap.
    */
   function swapTokensForAllTokensAndMintExact(
-    address tokenIn,
-    uint256 amountInMax,
-    bytes32[] calldata intermediaries,
     address indexPool,
-    uint256 poolAmountOut
+    bytes32[] calldata intermediaries,
+    uint256 poolAmountOut,
+    address tokenIn,
+    uint256 amountInMax
   ) external returns (uint256) {
     uint256 remainder = amountInMax;
     address[] memory tokens = IIndexPool(indexPool).getCurrentTokens();
@@ -645,7 +645,12 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
     address recipient
   ) internal returns (uint amountOut) {
     uint256 _balance = IERC20(tokenIn).balanceOf(address(this));
-    if (tokenIn != tokenOut) {
+    if (tokenIn == tokenOut) {
+      amountOut = _balance;
+      if (recipient != address(this)) {
+        tokenIn.safeTransfer(recipient, _balance);
+      }
+    } else {
       bool sushiFirst;
       assembly {
         sushiFirst := shr(168,  intermediate)
@@ -673,8 +678,6 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
       tokenIn.safeTransfer(pairFor(path[0], path[1]), amounts[0]);
       _swap(amounts, path, recipient);
       amountOut = amounts[amounts.length - 1];
-    } else {
-      amountOut = _balance;
     }
   }
 
