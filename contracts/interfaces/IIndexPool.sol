@@ -2,8 +2,10 @@
 pragma solidity >=0.6.0;
 pragma experimental ABIEncoderV2;
 
+import "./IERC20.sol";
 
-interface IIndexPool {
+
+interface IIndexPool is IERC20 {
   /**
    * @dev Token record data structure
    * @param bound is token bound to pool
@@ -77,7 +79,8 @@ interface IIndexPool {
     uint256[] calldata balances,
     uint96[] calldata denorms,
     address tokenProvider,
-    address unbindHandler
+    address unbindHandler,
+    address exitFeeRecipient
   ) external;
 
   function setMaxPoolTokens(uint256 maxPoolTokens) external;
