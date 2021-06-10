@@ -1,4 +1,5 @@
-pragma solidity >=0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.7.6;
 
 import "./interfaces/IUniswapV2Pair.sol";
 import "./interfaces/IWETH.sol";
@@ -177,10 +178,10 @@ contract Narwhal {
     uint256 amountIn
   ) internal view returns (uint256[] memory amounts) {
     require(path.length >= 2, "UniswapV2Library: INVALID_PATH");
-    amounts = new uint256[](path.length);
+    amounts = new uint[](path.length);
     amounts[0] = amountIn;
-    for (uint256 i; i < path.length - 1; i++) {
-      (uint256 reserveIn, uint256 reserveOut) = getReserves(path[i - 1], path[i]);
+    for (uint i; i < path.length - 1; i++) {
+      (uint reserveIn, uint reserveOut) = getReserves(path[i], path[i + 1]);
       amounts[i + 1] = getAmountOut(amounts[i], reserveIn, reserveOut);
     }
   }
