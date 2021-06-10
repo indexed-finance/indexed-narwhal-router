@@ -311,7 +311,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
    *
    * @param indexPool Address of the index pool to burn tokens from.
    * @param poolAmountInMax Maximum amount of pool tokens to burn.
-   * @param path Array of tokens to swap using the Uniswap router.
+   * @param path Array of encoded tokens to swap using the Narwhal router.
    * @param tokenAmountOut Amount of last token in `path` to receive.
    * @return poolAmountIn Amount of pool tokens burned.
    */
@@ -336,7 +336,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
    *
    * @param indexPool Address of the index pool to burn tokens from.
    * @param poolAmountInMax Maximum amount of pool tokens to burn.
-   * @param path Array of tokens to swap using the Uniswap router.
+   * @param path Array of encoded tokens to swap using the Narwhal router.
    * @param ethAmountOut Amount of eth to receive.
    * @return poolAmountIn Amount of pool tokens burned.
    */
