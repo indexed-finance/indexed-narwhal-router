@@ -2,14 +2,14 @@
 pragma solidity 0.7.6;
 pragma abicoder v2;
 
-import "./Narwhal.sol";
+import "./NarwhalRouter.sol";
 import "./BMath.sol";
 import "./interfaces/IIndexPool.sol";
 import "./interfaces/IERC20.sol";
 import "./libraries/TransferHelper.sol";
 
 
-contract IndexedNarwhalRouter is Narwhal, BMath {
+contract IndexedNarwhalRouter is NarwhalRouter, BMath {
   using TokenInfo for bytes32;
   using TokenInfo for address;
   using TransferHelper for address;
@@ -19,7 +19,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
     address _uniswapFactory,
     address _sushiswapFactory,
     address _weth
-  ) Narwhal(_uniswapFactory, _sushiswapFactory, _weth) {}
+  ) NarwhalRouter(_uniswapFactory, _sushiswapFactory, _weth) {}
 
 /** ========== Mint Single: Exact In ========== */
 
@@ -36,7 +36,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
     address indexPool,
     uint minPoolAmountOut
   ) external payable returns (uint poolAmountOut) {
-    require(path[0].readToken() == address(weth), "NRouter: MAX_IN");
+    require(path[0].readToken() == address(weth), "NRouter: INVALID_PATH");
     uint256[] memory amounts = getAmountsOut(path, msg.value);
 
     weth.deposit{value: amounts[0]}();
@@ -346,7 +346,7 @@ contract IndexedNarwhalRouter is Narwhal, BMath {
     bytes32[] calldata path,
     uint ethAmountOut
   ) external returns (uint poolAmountIn) {
-    require(path[path.length - 1].readToken() == address(weth), 'NRouter: INVALID_PATH');
+    require(path[path.length - 1].readToken() == address(weth), "NRouter: INVALID_PATH");
     poolAmountIn = _burnAndSwapForExact(
       indexPool,
       poolAmountInMax,
