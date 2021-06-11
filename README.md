@@ -1,5 +1,9 @@
 # @indexed-finance/indexed-narwhal-router
 
+<p align="center">
+  <img src="./assets/narwhal.png">
+</p>
+
 ## Scripts
 
 `yarn test`
