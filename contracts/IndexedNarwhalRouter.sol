@@ -408,6 +408,14 @@ contract IndexedNarwhalRouter is NarwhalRouter, BMath {
    *
    * `intermediaries` is an encoded Narwhal path with a one-byte prefix indicating
    * whether the first swap should use sushiswap.
+   *
+   * @param indexPool Address of the index pool to mint tokens with.
+   * @param intermediaries Encoded Narwhal tokens array with a one-byte prefix
+   * indicating whether the swap to the underlying token should use sushiswap.
+   * @param poolAmountOut Amount of index pool tokens to mint.
+   * @param tokenIn Token to buy the underlying tokens with.
+   * @param amountInMax Maximumm amount of `tokenIn` to spend.
+   * @return Amount of `tokenIn` spent.
    */
   function swapTokensForAllTokensAndMintExact(
     address indexPool,
@@ -460,6 +468,12 @@ contract IndexedNarwhalRouter is NarwhalRouter, BMath {
    *
    * `intermediaries` is an encoded Narwhal path with a one-byte prefix indicating
    * whether the first swap should use sushiswap.
+   *
+   * @param indexPool Address of the index pool to mint tokens with.
+   * @param intermediaries Encoded Narwhal tokens array with a one-byte prefix
+   * indicating whether the swap to the underlying token should use sushiswap.
+   * @param poolAmountOut Amount of index pool tokens to mint.
+   * @return Amount of ether spent.
    */
   function swapETHForAllTokensAndMintExact(
     address indexPool,
@@ -554,6 +568,17 @@ contract IndexedNarwhalRouter is NarwhalRouter, BMath {
    *
    * If a null address is provided as an intermediary, the input token will be
    * swapped directly for the output token.
+   *
+   * @param indexPool Address of the index pool to burn tokens from.
+   * @param minAmountsOut Minimum amount of each underlying token that must be
+   * received from the pool to not revert.
+   * @param intermediaries Encoded Narwhal tokens array with a one-byte prefix
+   * indicating whether the swap to the underlying token should use sushiswap.
+   * @param poolAmountIn Amount of index pool tokens to burn.
+   * @param tokenOut Address of the token to buy.
+   * @param minAmountOut Minimum amount of `tokenOut` that must be received to
+   * not revert.
+   * @return amountOutTotal Amount of `tokenOut` received.
    */
   function burnForAllTokensAndSwapForTokens(
     address indexPool,
@@ -583,6 +608,16 @@ contract IndexedNarwhalRouter is NarwhalRouter, BMath {
    *
    * If a null address is provided as an intermediary, the input token will be
    * swapped directly for the output token.
+   *
+   * @param indexPool Address of the index pool to burn tokens from.
+   * @param minAmountsOut Minimum amount of each underlying token that must be
+   * received from the pool to not revert.
+   * @param intermediaries Encoded Narwhal tokens array with a one-byte prefix
+   * indicating whether the swap to the underlying token should use sushiswap.
+   * @param poolAmountIn Amount of index pool tokens to burn.
+   * @param minAmountOut Minimum amount of ether that must be received to
+   * not revert.
+   * @return amountOutTotal Amount of ether received.
    */
   function burnForAllTokensAndSwapForETH(
     address indexPool,
@@ -680,7 +715,4 @@ contract IndexedNarwhalRouter is NarwhalRouter, BMath {
       amountOut = amounts[amounts.length - 1];
     }
   }
-
-/** ========== Internal Mint Functions ========== */
-
 }
